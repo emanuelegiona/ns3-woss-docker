@@ -1,5 +1,20 @@
 # Changelog
 
+## Release v4.0.0
+
+[Link to release][v400]
+
+Introduced support to new OS and WOSS versions:
+
+- OS: Ubuntu 22.04 LTS
+
+- WOSS: 1.12.6
+
+Moreover, starting from this release images are based on [`egiona/ns3-base`][ns3-base], effectively decoupling the support for new ns-3 versions from WOSS.
+This choice aims at providing more granularity for end users, as well as allowing the upgrade of ns-3 version independently from WOSS.
+
+For instance, at the time of the present release, WOSS 1.12.6 cannot be integrated with ns-3 due to the latest changes to the `core` module shipped in ns-3.41.
+
 ## Release v3.0.1
 
 [Link to release][v301]
@@ -92,6 +107,7 @@ Supported versions:
 [v110]: https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker/releases/tag/v1.1.0
 [v201]: https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker/releases/tag/v2.0.1
 [v301]: https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker/releases/tag/v3.0.1
+[v400]: https://github.com/emanuelegiona/ns3-woss-docker/releases/tag/v4.0.0
 
 <!--- v1.1.0 --->
 [ns3-cmake]: https://www.nsnam.org/docs/manual/html/working-with-cmake.html
@@ -99,3 +115,6 @@ Supported versions:
 <!--- v3.0.1 --->
 [gcc-8-issue]: https://gitlab.com/nsnam/ns-3-dev/-/blob/ns-3.36/RELEASE_NOTES.md#release-336
 [woss-netcdf-crash]: https://github.com/MetalKnight/woss-ns3/issues/43#event-10588536371
+
+<!-- v4.0.0 -->
+[ns3-base]: https://github.com/emanuelegiona/ns3-base-docker/

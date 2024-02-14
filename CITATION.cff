@@ -17,11 +17,11 @@ authors:
       University of Rome
     orcid: 'https://orcid.org/0000-0003-0871-7156'
 url: >-
-  https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker
+  https://github.com/emanuelegiona/ns3-woss-docker
 keywords:
   - docker
   - ns-3
   - woss
   - network-simulation
 license: MIT
-doi: 10.5281/zenodo.5727519
+doi: 10.5281/zenodo.5727518

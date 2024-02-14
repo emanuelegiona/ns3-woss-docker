@@ -2,7 +2,7 @@
 
 # MIT License
 
-# Copyright (c) 2021 Emanuele Giona <giona.emanuele@gmail.com> (SENSES Lab, 
+# Copyright (c) 2023 Emanuele Giona <giona.emanuele@gmail.com> (SENSES Lab, 
 # Sapienza University of Rome)
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +23,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-docker run -t -d --mount type=bind,source=$1,target=/home/$2 --name $3 $4
+NS3_DIR=${NS3_OPTIMIZED_DIR}
+
+echo "Switching to optimized profile in ns-3..."
+
+cd $NS3_DIR
+
+NS3_CONFIG="--build-profile=optimized --out=build --enable-examples --enable-tests"
+WOSS_CONFIG="--with-woss-source=${WOSS_LIB_SRC} --with-woss-library=${WOSS_LIB_DIR} --with-netcdf4-install=${WOSS_REQS_DIR}"
+CXX_CONFIG="-Wall"
+
+. ${NS3_PY_ENV}/bin/activate
+
+OUTCOME=1
+CXXFLAGS="${CXX_CONFIG}" ./waf configure $WOSS_CONFIG $NS3_CONFIG && OUTCOME=0
+
+if [[ "$OUTCOME" -eq 1 ]]; then
+    echo "Error: configuration failed"
+    exit 1
+fi
+
+OUTCOME=1
+./waf build && OUTCOME=0
+
+if [[ "$OUTCOME" -eq 1 ]]; then
+    echo "Error: build failed"
+    exit 1
+fi
+
+./waf --check-profile
+deactivate
+
+sed -i 's/^\(export NS3_CURR_PROFILE=\).*$/\1${NS3_OPTIMIZED_DIR}/' ~/.bashrc && \
+cd /home && \
+kill -USR1 $PPID
 
 exit 0

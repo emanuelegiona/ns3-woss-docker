@@ -2,15 +2,11 @@
 
 [ns-3][ns3] and [WOSS][woss] bundles using [Docker][docker].
 
-The scope of this repository is to automate the installation process of both 
-ns-3 and WOSS library, in order to provide a hassle-free setup process for a 
-simulation environment.
+The scope of this repository is to automate the installation process of both ns-3 and WOSS library, in order to provide a hassle-free setup process for a simulation environment.
 
-Images ship with fully-functioning ns-3 and WOSS library installations, also 
-including the corresponding [woss-ns3 module][woss-ns3]. 
-ns-3 is provided pre-built in `debug` and `optimized` profiles, with the 
-*former* being the active version on a first run; utility scripts to quickly
-switch between them are provided (see below).
+Images are based on [`egiona/ns3-base`][ns3-base-docker], shipping with WOSS library and the corresponding [woss-ns3 module][woss-ns3] installed. 
+Please refer to the [`ns3-base`][ns3-base] repository for further details regarding available ns-3 configurations and utilities.
+
 Database configuration is left to the user, mainly for Docker image size 
 purposes.
 
@@ -18,17 +14,17 @@ purposes.
 
 Docker image name: [**`egiona/ns3-woss`**][docker-hub-repo].
 
-| Docker image tag | OS | ns-3 | Build system | WOSS | Dockerfile |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| [`u20.04-n3.40-w1.12.5`][image5] | Ubuntu 20.04 | [3.40][ns3.40] | CMake | [1.12.5][woss-changelog] | [link][file5] |
-| [`u18.04-n3.35-w1.12.5`][image3] | Ubuntu 18.04 | [3.35][ns3.35] | Waf | [1.12.5][woss-changelog] | [link][file3] |
-| [`u18.04-n3.34-w1.12.5`][image2] | Ubuntu 18.04 | [3.34][ns3.34] | Waf | [1.12.5][woss-changelog] | [link][file2] |
-| [`u18.04-n3.33-w1.12.5`][image1] | Ubuntu 18.04 | [3.33][ns3.33] | Waf | [1.12.5][woss-changelog] | [link][file1] |
+| Docker image tag | `egiona/ns3-base` | WOSS | Dockerfile |
+| :---: | :---: | :---: | :---: |
+| [`u22.04-n3.40-w1.12.6`][img5] | [`u22.04-n3.40`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file5] |
+| [`u20.04-n3.40-w1.12.6`][img4] | [`u20.04-n3.40`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file5] |
+| [`u18.04-n3.35-w1.12.6`][img3] | [`u18.04-n3.35`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file3] |
+| [`u18.04-n3.34-w1.12.6`][img2] | [`u18.04-n3.34`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file2] |
+| [`u18.04-n3.33-w1.12.6`][img1] | [`u18.04-n3.33`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file1] |
 
 Full changelog can be found at [this page](./CHANGELOG.md).
 
-> New revisions of images (_i.e. `-rN` suffix_) **do not overwrite** previous ones in order to provide backwards compatibility.
-Previous tags can still be found on [DockerHub][docker-hub-repo], but their use is discouraged.
+_Previous tags are still available on [DockerHub][docker-hub-repo], unless they have been discontinued (see below)._
 
 ### Discontinued images
 
@@ -36,7 +32,7 @@ The following image tags have been discontinued and are not available from the D
 
 If you are using any of these tags, please consider switching to a different one that is still supported.
 
-| Docker image tag | Reason | Date |
+| Docker image tag | Motivation | Date |
 | :---: | :---: | :---: |
 | `u20.04-n3.37-w1.12.5` <br> `u18.04-n3.37-w1.12.4-r2` <br> `u18.04-n3.37-w1.12.4` | GCC compiler issues; <br> not solved by Ubuntu 20.04 upgrade | 2023/10/11 |
 
@@ -46,7 +42,7 @@ Any problems should be reported via the GitHub issue tracker.
 
 Users are welcomed to contribute new images (_e.g._ different base image or other ns-3 versions) via Pull Request and adhering to the following style:
 
-- Directory named `<A-B-C>` with: `A` equal to an arbitrary versioned base image short-hand (_i.e._ `u20.04` refers to Ubuntu 20.04); `B` equal to the ns-3 version bundled (_i.e._ `n3.40` refers to ns-3.40); and `C` equal to the WOSS version bundled (_i.e._ `w1.12.5` refers to WOSS 1.12.5).
+- Directory named `<A-B>` with: `A` equal to an arbitrary versioned base image short-hand (_i.e._ `u22.04-n3.40` refers to the same `egiona/ns3-base` tag); and `B` equal to the WOSS version bundled (_i.e._ `w1.12.6` refers to WOSS 1.12.6).
 
     Such directory name will also be used as image tag.
 
@@ -103,6 +99,7 @@ However, _utility scripts_ are only provided for UNIX-like systems.
 
     This script allows for easy decoupling of development directory from ns-3's source directory.
     Indeed, it is possible to keep novel modules and program driver scripts outside `src` (or `contrib`) and `scratch` directories of the ns-3 installation directory during development, and only copying them afterwards.
+    This is especially useful when paired with mounted directories.
 
     Multiple targets are present, allowing: ns-3 current version checking, compilation and execution of simulation driver programs (copying them to `scratch` subdir first), management of ns-3 modules (creation in `contrib` subdir and copy outside, synchronization of contents, elimination), and debugging (GNU debugger, Valgrind, ns-3 tests).
 
@@ -133,17 +130,19 @@ However, it is advisable to keep a _local backup copy_ of your modules and exper
 
 4. Mount a local directory into a container (just once, instead of `docker run`) using
 
-    `./mount.sh <local/path/to/directory> <path/to/directory> <container name> <image name>`
+    `docker run -td --mount type=bind,source=<local/FS/path>,target=<container/FS/path> --name <container name> <image ID>`
 
-    _Local path to be mounted must be absolute. The path within a container's filesystem is placed under its_&nbsp; `/home/` _directory._
+    _Paths to be mounted must be absolute._
 
     _This is only needed the **first time** a container is instantiated, subsequent calls to_&nbsp; `docker start` _on the same container will automatically load the mounted directory._
+
+    _**Warning:** existing container contents at the same target path will be overwritten with the ones provided by the local filesystem._
 
 5. Starting from `r2` images onwards, an environment variable `CXX_CONFIG` is available for user-defined scripts to adapt their GCC compilation parameters; by default, such variable holds the following contents:
 
     `CXX_CONFIG="-Wall -Werror -Wno-unused-variable"`
 
-    Moreover, [build scripts](./u20.04-n3.40-w1.12.5/ns3-build/) have been updated to provide an exit value reflective of ns-3's configuration and build outcome.
+    Moreover, [build scripts][latest-build] have been updated to provide an exit value reflective of ns-3's configuration and build outcome.
 
 # Citing this work
 
@@ -151,17 +150,17 @@ If you use any of the Docker images described in this repository, please cite th
 
 **APA**
 ```
-Giona, E. ns-3 and WOSS Docker images [Computer software]. https://doi.org/10.5281/zenodo.5727519
+Giona, E. ns-3 and WOSS Docker images [Computer software]. https://doi.org/10.5281/zenodo.5727518
 ```
 
 **BibTeX**
 ```
 @software{Giona_ns-3_and_WOSS,
 author = {Giona, Emanuele},
-doi = {10.5281/zenodo.5727519},
+doi = {10.5281/zenodo.5727518},
 license = {MIT},
 title = {{ns-3 and WOSS Docker images}},
-url = {https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker}
+url = {https://github.com/emanuelegiona/ns3-woss-docker}
 }
 ```
 
@@ -169,7 +168,7 @@ Bibliography entries generated using [Citation File Format][cff] described in th
 
 # License
 
-**Copyright (c) 2023 Emanuele Giona ([SENSES Lab][senseslab], Sapienza University of Rome)**
+**Copyright (c) 2024 Emanuele Giona ([SENSES Lab][senseslab], Sapienza University of Rome)**
 
 This repository and Docker images themselves are distributed under [MIT license][docker-license].
 
@@ -188,27 +187,28 @@ chosen for the Docker images does not necessarily apply to them.
 [woss-ns3]: https://github.com/MetalKnight/woss-ns3
 
 [docker-hub-repo]: https://hub.docker.com/r/egiona/ns3-woss
+[ns3-base-docker]: https://hub.docker.com/r/egiona/ns3-base
 
-[ns3.33]: https://www.nsnam.org/releases/ns-3-33/
-[ns3.34]: https://www.nsnam.org/releases/ns-3-34/
-[ns3.35]: https://www.nsnam.org/releases/ns-3-35/
-[ns3.40]: https://www.nsnam.org/releases/ns-3-40/
+[ns3-base]: https://github.com/emanuelegiona/ns3-base-docker
+[ns3-base-changelog]: https://github.com/emanuelegiona/ns3-base-docker/blob/main/CHANGELOG.md
 
 [woss-changelog]: https://woss.dei.unipd.it/woss/doxygen/Changelog.html
 
-[latest-debug]: ./u20.04-n3.40-w1.12.5/ns3-build/build-debug.sh
-[latest-optimized]: ./u20.04-n3.40-w1.12.5/ns3-build/build-optimized.sh
-[latest-build]: ./u20.04-n3.40-w1.12.5/ns3-build/
-[latest-makefile]: ./u20.04-n3.40-w1.12.5/ns3-utils/Makefile
+[latest-debug]: ./u22.04-n3.40-w1.12.6/ns3-build/build-debug.sh
+[latest-optimized]: ./u22.04-n3.40-w1.12.6/ns3-build/build-optimized.sh
+[latest-build]: ./u22.04-n3.40-w1.12.6/ns3-build/
+[latest-makefile]: ./u22.04-n3.40-w1.12.6/ns3-utils/Makefile
 
-[image5]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u20.04-n3.40-w1.12.5
-[image3]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.35-w1.12.5
-[image2]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.34-w1.12.5
-[image1]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.33-w1.12.5
-[file5]: ./u20.04-n3.40-w1.12.5/Dockerfile
-[file3]: ./u18.04-n3.35-w1.12.5/Dockerfile
-[file2]: ./u18.04-n3.34-w1.12.5/Dockerfile
-[file1]: ./u18.04-n3.33-w1.12.5/Dockerfile
+[img5]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u22.04-n3.40-w1.12.6
+[img4]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u20.04-n3.40-w1.12.6
+[img3]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.35-w1.12.6
+[img2]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.34-w1.12.6
+[img1]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.33-w1.12.6
+[file5]: ./u22.04-n3.40-w1.12.6/Dockerfile
+[file4]: ./u20.04-n3.40-w1.12.6/Dockerfile
+[file3]: ./u18.04-n3.35-w1.12.6/Dockerfile
+[file2]: ./u18.04-n3.34-w1.12.6/Dockerfile
+[file1]: ./u18.04-n3.33-w1.12.6/Dockerfile
 
 [docker-install]: https://docs.docker.com/engine/install/
 
