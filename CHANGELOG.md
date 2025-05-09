@@ -1,5 +1,13 @@
 # Changelog
 
+## Release v4.1.0
+
+[Link to release][v410]
+
+Introduced support for [`egiona/ns3-base`][ns3-base] image tags with upgraded Boost C++ libraries.
+
+Please refer to respective [v1.1.0 release notes][ns3-base-v110] for further details.
+
 ## Release v4.0.0
 
 [Link to release][v400]
@@ -108,6 +116,7 @@ Supported versions:
 [v201]: https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker/releases/tag/v2.0.1
 [v301]: https://github.com/SENSES-Lab-Sapienza/ns3-woss-docker/releases/tag/v3.0.1
 [v400]: https://github.com/emanuelegiona/ns3-woss-docker/releases/tag/v4.0.0
+[v410]: https://github.com/emanuelegiona/ns3-woss-docker/releases/tag/v4.1.0
 
 <!--- v1.1.0 --->
 [ns3-cmake]: https://www.nsnam.org/docs/manual/html/working-with-cmake.html
@@ -118,3 +127,6 @@ Supported versions:
 
 <!-- v4.0.0 -->
 [ns3-base]: https://github.com/emanuelegiona/ns3-base-docker/
+
+<!-- v4.1.0 -->
+[ns3-base-v110]: https://github.com/emanuelegiona/ns3-base-docker/blob/boosted/CHANGELOG.md#release-v110

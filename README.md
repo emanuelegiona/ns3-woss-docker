@@ -18,8 +18,11 @@ Docker image name: [**`egiona/ns3-woss`**][docker-hub-repo].
 | :---: | :---: | :---: | :---: |
 | [`u22.04-n3.40-w1.12.6`][img5] | [`u22.04-n3.40`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file5] |
 | [`u20.04-n3.40-w1.12.6`][img4] | [`u20.04-n3.40`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file5] |
+| [`u18.04-n3.35-boosted-w1.12.6`][img3b] | [`u18.04-n3.35-boosted`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file3b] |
 | [`u18.04-n3.35-w1.12.6`][img3] | [`u18.04-n3.35`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file3] |
+| [`u18.04-n3.34-boosted-w1.12.6`][img2b] | [`u18.04-n3.34-boosted`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file2b] |
 | [`u18.04-n3.34-w1.12.6`][img2] | [`u18.04-n3.34`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file2] |
+| [`u18.04-n3.33-boosted-w1.12.6`][img1b] | [`u18.04-n3.33-boosted`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file1b] |
 | [`u18.04-n3.33-w1.12.6`][img1] | [`u18.04-n3.33`][ns3-base-changelog] | [1.12.6][woss-changelog] | [link][file1] |
 
 Full changelog can be found at [this page](./CHANGELOG.md).
@@ -177,7 +180,7 @@ However, ns-3 and WOSS are distributed under their respective licenses:
 All installed packages may also be subject to their own license, and the license
 chosen for the Docker images does not necessarily apply to them.
 
-**Diclaimer: Docker, Ubuntu, ns-3, WOSS and other cited or included software belongs to their respective owners.**
+**Diclaimer: Docker, Ubuntu, ns-3, Boost, WOSS and other cited or included software belongs to their respective owners.**
 
 
 
@@ -201,13 +204,19 @@ chosen for the Docker images does not necessarily apply to them.
 
 [img5]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u22.04-n3.40-w1.12.6
 [img4]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u20.04-n3.40-w1.12.6
+[img3b]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.35-boosted-w1.12.6
 [img3]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.35-w1.12.6
+[img2b]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.34-boosted-w1.12.6
 [img2]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.34-w1.12.6
+[img1b]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.33-boosted-w1.12.6
 [img1]: https://hub.docker.com/r/egiona/ns3-woss/tags?page=1&name=u18.04-n3.33-w1.12.6
 [file5]: ./u22.04-n3.40-w1.12.6/Dockerfile
 [file4]: ./u20.04-n3.40-w1.12.6/Dockerfile
+[file3b]: ./u18.04-n3.35-boosted-w1.12.6/Dockerfile
 [file3]: ./u18.04-n3.35-w1.12.6/Dockerfile
+[file2b]: ./u18.04-n3.34-boosted-w1.12.6/Dockerfile
 [file2]: ./u18.04-n3.34-w1.12.6/Dockerfile
+[file1b]: ./u18.04-n3.33-boosted-w1.12.6/Dockerfile
 [file1]: ./u18.04-n3.33-w1.12.6/Dockerfile
 
 [docker-install]: https://docs.docker.com/engine/install/
